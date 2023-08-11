@@ -1,0 +1,67 @@
+# Fit model 1
+model1 <- lm(response ~ predictor1 + predictor2, data = your_data)
+
+# Fit model 2
+model2 <- lm(response ~ predictor1 + predictor2 + predictor3, data = your_data)
+
+# R-squared for model 1
+r_squared_model1 <- summary(model1)$r.squared
+
+# R-squared for model 2
+r_squared_model2 <- summary(model2)$r.squared
+
+r_squared_difference <- r_squared_model2 - r_squared_model1
+
+# Degrees of freedom for numerator and denominator
+df_numerator <- length(model2$coefficients) - length(model1$coefficients)
+df_denominator <- nrow(your_data) - length(model2$coefficients)
+
+# F-statistic
+f_statistic <- (r_squared_difference / df_numerator) / ((1 - r_squared_model2) / df_denominator)
+
+# Calculate the p-value
+p_value <- 1 - pf(f_statistic, df_numerator, df_denominator)
+
+#In my case
+#TA_model
+TA_model <- glm(as.factor(VD_ICD730) ~ age + sex + scale(SCORESUM))
+#EAS_model
+EAS_model <- glm(as.factor(VD_ICD730) ~ age + sex + scale(SCORESUM))
+
+#Assuming that both models have the same predictor variables, the degrees of freedom for each model would be calculated as follows:
+#The number of predictors (p) in each model is 3 (age, sex, scale(SCORESUM)).
+#The total sample size (n) is 58,700.
+#Degrees of Freedom (df) for each model:
+#df = n - p - 1
+#So, for each model:
+df = 58621 - 3 - 1 = 58617
+
+
+# Fit the models
+TA_model <- glm(as.factor(VD_ICD730) ~ age + sex + scale(TA_SCORESUM), data = d4, family = binomial)
+EAS_model <- glm(as.factor(VD_ICD730) ~ age + sex + scale(EAS_SCORESUM), data = d4, family = binomial)
+
+# Calculate Nagelkerke's R-squared for each model
+R2_TA <- 1 - (TA_model$deviance / TA_model$null.deviance)
+R2_EAS <- 1 - (EAS_model$deviance / EAS_model$null.deviance)
+
+# Calculate the difference in Nagelkerke's R-squared values
+R2_difference <- R2_TA - R2_EAS
+
+# Perform likelihood ratio test
+LR_statistic <- 2 * (TA_model$null.deviance - EAS_model$null.deviance)
+p_value <- 1 - pchisq(LR_statistic, df = 1)  # df = 1 for 1 degree of freedom
+
+# Print the results
+cat("Nagelkerke's R-squared difference:", R2_difference, "\n")
+cat("Likelihood Ratio (LR) statistic:", LR_statistic, "\n")
+cat("p-value:", p_value, "\n")
+
+# Determine statistical significance
+if (p_value < 0.05) {
+  cat("The difference in Nagelkerke's R-squared values is statistically significant.\n")
+} else {
+  cat("The difference in Nagelkerke's R-squared values is not statistically significant.\n")
+}
+
+
