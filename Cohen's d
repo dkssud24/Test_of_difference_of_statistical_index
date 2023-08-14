@@ -1,6 +1,8 @@
 # Fit your logistic regression models
 TA_model <- glm(as.factor(VD_ICD730) ~ age + sex + scale(TA_SCORESUM), data = d4, family = binomial)
+#TA_model <- glm(as.factor(VD_ICD730) ~ age + sex + scale(SCORESUM), data = d4, family = binomial)
 EAS_model <- glm(as.factor(VD_ICD730) ~ age + sex + scale(EAS_SCORESUM), data = d4, family = binomial)
+#EAS_model <- glm(as.factor(VD_ICD730) ~ age + sex + scale(SCORESUM), data = d4, family = binomial)
 
 # Extract coefficients
 coefficients_TA <- coef(TA_model)
