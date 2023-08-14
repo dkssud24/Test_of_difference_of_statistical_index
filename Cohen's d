@@ -42,3 +42,120 @@ p_value <- 2 * (1 - pnorm(abs(z_score)))
 cat("Cohen's d:", cohen_d, "\n")
 cat("Z-score:", z_score, "\n")
 cat("p-value:", p_value, "\n")
+
+
+#TA project
+#준비단계
+a2 <- read.table("",header=T)
+b2 <- read.table("",header=T)
+c2 <- read.table("",header=T)
+
+# Fit your logistic regression models
+TA_model <- glm(as.factor(VD_ICD730) ~ scale(SCORESUM), data = a2, family = binomial)
+EAS_model <- glm(as.factor(VD_ICD730) ~ scale(SCORESUM), data = b2, family = binomial)
+TA_PT_model <-  glm(as.factor(VD_ICD730) ~  scale(SCORESUM), data = c2, family = binomial)
+
+#EAS & TA 비교
+# Extract coefficients
+coefficients_TA <- coef(TA_model)
+coefficients_EAS <- coef(EAS_model)
+
+# Calculate the difference in coefficients
+difference_in_coefficients <- coefficients_TA - coefficients_EAS
+
+# Calculate the pooled standard error
+pooled_standard_error <- sqrt((vcov(TA_model)[1, 1] + vcov(EAS_model)[1, 1]) / 2)
+
+# Calculate Cohen's d
+cohen_d <- difference_in_coefficients[1] / pooled_standard_error
+
+# Print Cohen's d
+cat("Cohen's d:", cohen_d, "\n")
+
+# Calculate the degrees of freedom for the pooled standard error
+df_pooled <- sum(TA_model$df.residual, EAS_model$df.residual)
+
+# Calculate the Z-score
+z_score <- cohen_d / pooled_standard_error
+
+# Calculate the p-value using the standard normal distribution
+p_value <- 2 * (1 - pnorm(abs(z_score)))
+
+# Print Cohen's d and p-value
+cat("Cohen's d:", cohen_d, "\n")
+cat("Z-score:", z_score, "\n")
+cat("p-value:", p_value, "\n")
+
+
+#EAS & PT_TA 비교
+# Extract coefficients
+coefficients_TA_PT <- coef(TA_PT_model)
+coefficients_EAS <- coef(EAS_model)
+
+# Calculate the difference in coefficients
+difference_in_coefficients <- coefficients_TA_PT - coefficients_EAS
+
+# Calculate the pooled standard error
+pooled_standard_error <- sqrt((vcov(TA_PT_model)[1, 1] + vcov(EAS_model)[1, 1]) / 2)
+
+# Calculate Cohen's d
+cohen_d <- difference_in_coefficients[1] / pooled_standard_error
+
+# Print Cohen's d
+cat("Cohen's d:", cohen_d, "\n")
+
+# Calculate the degrees of freedom for the pooled standard error
+df_pooled <- sum(TA_PT_model$df.residual, EAS_model$df.residual)
+
+# Calculate the Z-score
+z_score <- cohen_d / pooled_standard_error
+
+# Calculate the p-value using the standard normal distribution
+p_value <- 2 * (1 - pnorm(abs(z_score)))
+
+# Print Cohen's d and p-value
+cat("Cohen's d:", cohen_d, "\n")
+cat("Z-score:", z_score, "\n")
+cat("p-value:", p_value, "\n")
+
+
+
+#TA & PTTA 비교
+
+# Extract coefficients
+coefficients_TA <- coef(TA_model)
+coefficients_EAS <- coef(EAS_model)
+coefficients_TA_PT <- coef(TA_PT_model)
+
+# Calculate the difference in coefficients
+#difference_in_coefficients <- coefficients_TA - coefficients_EAS
+#difference_in_coefficients <- coefficients_TA_PT - coefficients_EAS
+difference_in_coefficients <- coefficients_TA - coefficients_TA_PT
+
+
+# Calculate the pooled standard error
+#pooled_standard_error <- sqrt((vcov(TA_model)[1, 1] + vcov(EAS_model)[1, 1]) / 2)
+#pooled_standard_error <- sqrt((vcov(TA_PT_model)[1, 1] + vcov(EAS_model)[1, 1]) / 2)
+pooled_standard_error <- sqrt((vcov(TA_PT_model)[1, 1] + vcov(TA_model)[1, 1]) / 2)
+
+# Calculate Cohen's d
+cohen_d <- difference_in_coefficients[1] / pooled_standard_error
+
+# Print Cohen's d
+cat("Cohen's d:", cohen_d, "\n")
+
+# Calculate the degrees of freedom for the pooled standard error
+#df_pooled <- sum(TA_model$df.residual, EAS_model$df.residual)
+#df_pooled <- sum(TA_PT_model$df.residual, EAS_model$df.residual)
+df_pooled <- sum(TA_PT_model$df.residual, TA_model$df.residual)
+
+# Calculate the Z-score
+z_score <- cohen_d / pooled_standard_error
+
+# Calculate the p-value using the standard normal distribution
+p_value <- 2 * (1 - pnorm(abs(z_score)))
+
+# Print Cohen's d and p-value
+cat("Cohen's d:", cohen_d, "\n")
+cat("Z-score:", z_score, "\n")
+cat("p-value:", p_value, "\n")
