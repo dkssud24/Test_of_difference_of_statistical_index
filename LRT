@@ -1,3 +1,8 @@
+library(data.table)
+library(dplyr)
+library(fmsb)
+library(lmtest)
+
 #Read_table
 a2 <- read.table("single.HT.SBP.BBJ",header=T)
 c2 <- read.table("TA.HT.SBP.BBJ.GCST006624",header=T)
