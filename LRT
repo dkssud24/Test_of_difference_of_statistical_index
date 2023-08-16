@@ -19,9 +19,9 @@ model_ta <- glm(as.factor(VD_ICD730) ~ scale(SCORESUM)+age+sex, data=c2,family=b
 model_pt <- glm(as.factor(VD_ICD730) ~ scale(SCORESUM)+age+sex, data=b2,family=binomial)
 
 #Result
-lrt_result <- anova(null_model,model_ta,test="Chisq")
-print(lrt_result)
 lrt_result <- anova(null_model,model_eas,test="Chisq")
 print(lrt_result)
 lrt_result <- anova(null_model,model_pt,test="Chisq")
+print(lrt_result)
+lrt_result <- anova(null_model,model_ta,test="Chisq")
 print(lrt_result)
