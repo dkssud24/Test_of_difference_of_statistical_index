@@ -11,7 +11,7 @@ b2 <- read.table("PT.HT.SBP.BBJ.GCST006624",header=T)
 #Fit_null_model
 null_model_eas <- glm(as.factor(VD_ICD730) ~ sex+age, data=a2,family=binomial)
 null_model_ta <- glm(as.factor(VD_ICD730) ~ sex+age, data=c2,family=binomial)
-null_model_pa <- glm(as.factor(VD_ICD730) ~ sex+age, data=b2,family=binomial)
+null_model_pt <- glm(as.factor(VD_ICD730) ~ sex+age, data=b2,family=binomial)
 
 #Fit_full_model
 model_eas <- glm(as.factor(VD_ICD730) ~ scale(SCORESUM)+age+sex, data=a2,family=binomial)
